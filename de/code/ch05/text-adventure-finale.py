@@ -7,6 +7,10 @@ def show_instructions():
     print("""
 Text Adventure
 ==============
+
+Erreiche den Garten mit einem Schlüssel und Zaubertrank
+Geh den Monstern aus dem Weg!
+
 Befehle:
   gehenach [Richtung]
   nimm [Gegenstand]
@@ -30,12 +34,27 @@ inventory = []
 rooms = {
 
     'Diele' : { 
-        'süden' : 'Küche'
+        'süden' : 'Küche',
+        'osten' : 'Speisezimmer',
+        'Gegenstand' : 'Schlüssel'
     },
 
     'Küche' : {
-        'norden' : 'Diele'
+        'norden' : 'Diele',
+        'Gegenstand' : 'Monster'
+    },
+
+    'Speisezimmer' : {
+        'westen' : 'Diele',
+        'süden' : 'Garten',
+        'Gegenstand' : 'Zaubertrank'
+    },
+
+    'Garten' : {
+        'norden' : 'Speisezimmer'
     }
+
+
 
 }
 
@@ -86,3 +105,15 @@ while True:
         else:
             # Sage dem Spieler, dass er diesen Gegenstand nicht nehmen kann
             print("Du kannst " + move[1] + " nicht nehmen!")
+
+    # Der Spieler verliert, wenn im Zimmer ein Monster ist
+    if ('Gegenstand' in rooms[current_room]
+          and 'Monster' in rooms[current_room]['Gegenstand']):
+        print('Ein Monster hat dich erwischt... SPIEL AUS!')
+        break
+
+    # Mit Schlüssel und Zaubertrank entkommen, um zu gewinnen
+    if (current_room == 'Garten' and 'Schlüssel' in inventory
+          and 'Zaubertrank' in inventory):
+       print('Du hast das Haus verlassen... DU GEWINNST!')
+       break
