@@ -7,6 +7,10 @@ def show_instructions():
     print("""
 Text Adventure
 ==============
+
+Atteins le jardin avec la clé et la potion
+Évite les monstres !
+
 Commandes:
   aller [direction]
   prendre [objet]
@@ -30,11 +34,24 @@ inventory = []
 rooms = {
 
     'Hall' : { 
-        'sud' : 'Cuisine'
+        'sud' : 'Cuisine',
+        'est' : 'Salle à manger',
+        'objet' : 'clé'
     },
 
     'Cuisine' : {
-        'nord' : 'Hall'
+        'nord' : 'Hall',
+        'objet' : 'monstre'
+    },
+
+    'Salle à manger' : {
+        'ouest' : 'Hall',
+        'sud' : 'Jardin',
+        'objet' : 'potion'
+    },
+
+    'Jardin' : {
+        'nord' : 'Salle à manger'
     }
 
 }
@@ -83,3 +100,15 @@ while True:
         else:
             # leur indiquer qu'ils ne peuvent pas l'avoir
             print("Vous ne pouvez pas l avoir " + move[1] + " !")
+
+    # le joueur perd la partie s'il y a un monstre dans la pièce
+    if ('objet' in rooms[current_room]
+          and 'monstre' in rooms[current_room]['objet']):
+        print('Un monstre t\'a attrapé... TU AS PERDU !')
+        break
+
+    # atteins le jardin avec la clé et la potion pour gagner
+    if (current_room == 'Jardin' and 'clé' in inventory
+          and 'potion' in inventory):
+       print('Tu as quitté la maison... TU AS GAGNÉ !')
+       break
